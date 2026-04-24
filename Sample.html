@@ -1,0 +1,2835 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Website Data Form</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --forest: #2d6a4f;
+            --forest-d: #1b4332;
+            --forest-l: #52796f;
+            --terra: #e07a5f;
+            --amber: #f4a261;
+            --amber-l: #fde8d4;
+            --sand: #fef6e4;
+            --sand-d: #f5ede0;
+            --sand-dd: #ede0cc;
+            --text: #2d3a2e;
+            --text-m: #5a6b5c;
+            --text-l: #8a9e8c;
+            --white: #fffdf7;
+            --border: #d8cdb8;
+            --border-l: #ede0cc;
+            --shadow: 0 2px 16px rgba(45, 106, 79, .09);
+            --shadow-md: 0 8px 32px rgba(45, 106, 79, .14);
+            --shadow-lg: 0 20px 60px rgba(45, 106, 79, .18);
+            --r: 12px;
+            --r-sm: 8px;
+            --r-lg: 20px;
+            --font-d: 'Fraunces', serif;
+            --font-b: 'DM Sans', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--font-b);
+            background: var(--sand);
+            color: var(--text);
+            line-height: 1.65;
+            min-height: 100vh
+        }
+
+        /* ── LAYOUT ── */
+        .app {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            background: var(--forest-d);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            z-index: 100
+        }
+
+        .sidebar-brand {
+            padding: 1.75rem 1.5rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, .1)
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--terra);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: .75rem
+        }
+
+        .brand-title {
+            font-family: var(--font-d);
+            color: #e8f5ee;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.2
+        }
+
+        .brand-sub {
+            color: rgba(232, 245, 238, .5);
+            font-size: .72rem;
+            margin-top: .2rem
+        }
+
+        .sidebar-nav {
+            padding: 1rem .75rem;
+            flex: 1
+        }
+
+        .nav-section-label {
+            color: rgba(232, 245, 238, .38);
+            font-size: .65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            padding: .5rem .75rem;
+            margin-top: .5rem
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            padding: .6rem .75rem;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            transition: all .18s;
+            margin-bottom: 2px;
+            text-decoration: none;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-family: var(--font-b)
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, .07)
+        }
+
+        .nav-item.active {
+            background: rgba(224, 122, 95, .18);
+            border-left: 3px solid var(--terra)
+        }
+
+        .nav-item .ni-icon {
+            font-size: 1rem;
+            width: 22px;
+            flex-shrink: 0
+        }
+
+        .nav-item .ni-label {
+            font-size: .83rem;
+            font-weight: 500;
+            color: rgba(232, 245, 238, .75)
+        }
+
+        .nav-item.active .ni-label {
+            color: #fff
+        }
+
+        .nav-item .ni-badge {
+            margin-left: auto;
+            background: var(--terra);
+            color: #fff;
+            font-size: .6rem;
+            font-weight: 700;
+            padding: .12rem .4rem;
+            border-radius: 4px;
+            min-width: 18px;
+            text-align: center
+        }
+
+        .nav-item .ni-check {
+            margin-left: auto;
+            color: #52b788;
+            font-size: .85rem;
+            opacity: 0;
+            transition: opacity .2s
+        }
+
+        .nav-item.done .ni-check {
+            opacity: 1
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, .08)
+        }
+
+        .progress-bar-wrap {
+            background: rgba(255, 255, 255, .1);
+            border-radius: 10px;
+            height: 4px;
+            margin-bottom: .5rem;
+            overflow: hidden
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--terra), var(--amber));
+            height: 100%;
+            border-radius: 10px;
+            transition: width .4s
+        }
+
+        .progress-text {
+            color: rgba(232, 245, 238, .5);
+            font-size: .7rem
+        }
+
+        /* ── MAIN ── */
+        .main {
+            background: var(--sand);
+            overflow-y: auto
+        }
+
+        .main-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-l);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50
+        }
+
+        .main-header h1 {
+            font-family: var(--font-d);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--forest-d)
+        }
+
+        .main-header p {
+            font-size: .82rem;
+            color: var(--text-m);
+            margin-top: .1rem
+        }
+
+        .header-actions {
+            display: flex;
+            gap: .75rem;
+            align-items: center
+        }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: .65rem 1.4rem;
+            border-radius: var(--r-sm);
+            font-weight: 600;
+            font-size: .85rem;
+            cursor: pointer;
+            transition: all .18s;
+            border: none;
+            font-family: var(--font-b);
+            text-decoration: none;
+            white-space: nowrap
+        }
+
+        .btn-primary {
+            background: var(--forest);
+            color: #fff
+        }
+
+        .btn-primary:hover {
+            background: var(--forest-d);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(45, 106, 79, .3)
+        }
+
+        .btn-terra {
+            background: var(--terra);
+            color: #fff
+        }
+
+        .btn-terra:hover {
+            background: #c8654a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(224, 122, 95, .3)
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--forest);
+            border: 1.5px solid var(--forest)
+        }
+
+        .btn-outline:hover {
+            background: var(--forest);
+            color: #fff
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-m);
+            border: 1.5px solid var(--border)
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--forest);
+            color: var(--forest)
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: #c1440e;
+            border: 1.5px solid #e8a090
+        }
+
+        .btn-danger:hover {
+            background: #fff0ec;
+            border-color: #c1440e
+        }
+
+        .btn-sm {
+            padding: .45rem 1rem;
+            font-size: .78rem
+        }
+
+        .btn-xs {
+            padding: .32rem .7rem;
+            font-size: .72rem
+        }
+
+        /* ── FORM SECTIONS ── */
+        .form-page {
+            display: none;
+            padding: 2rem 2.5rem 4rem;
+            max-width: 860px
+        }
+
+        .form-page.active {
+            display: block
+        }
+
+        .form-page-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1.25rem;
+            border-bottom: 2px solid var(--border-l)
+        }
+
+        .form-page-header .page-icon {
+            font-size: 2rem;
+            margin-bottom: .5rem;
+            display: block
+        }
+
+        .form-page-header h2 {
+            font-family: var(--font-d);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--forest-d);
+            margin-bottom: .3rem
+        }
+
+        .form-page-header p {
+            color: var(--text-m);
+            font-size: .92rem;
+            line-height: 1.6
+        }
+
+        /* ── FORM ELEMENTS ── */
+        .form-section {
+            background: var(--white);
+            border-radius: var(--r);
+            border: 1px solid var(--border-l);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow)
+        }
+
+        .form-section h3 {
+            font-family: var(--font-d);
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--forest-d);
+            margin-bottom: 1.25rem;
+            padding-bottom: .75rem;
+            border-bottom: 1px solid var(--border-l);
+            display: flex;
+            align-items: center;
+            gap: .6rem
+        }
+
+        .form-section h3 .sh-icon {
+            font-size: 1.1rem
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1.1rem
+        }
+
+        .form-grid-2 {
+            grid-template-columns: 1fr 1fr
+        }
+
+        .form-grid-3 {
+            grid-template-columns: 1fr 1fr 1fr
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: .38rem
+        }
+
+        .form-group label {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: .02em
+        }
+
+        .form-group label .required {
+            color: var(--terra);
+            margin-left: 2px
+        }
+
+        .form-group label .hint {
+            color: var(--text-l);
+            font-weight: 400;
+            font-size: .73rem;
+            margin-left: .3rem
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: .68rem 1rem;
+            font-family: var(--font-b);
+            font-size: .88rem;
+            color: var(--text);
+            background: var(--white);
+            outline: none;
+            transition: all .18s;
+            width: 100%
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--forest);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, .08)
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-l)
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+            line-height: 1.6
+        }
+
+        .form-group select {
+            cursor: pointer
+        }
+
+        .char-count {
+            font-size: .68rem;
+            color: var(--text-l);
+            text-align: right;
+            margin-top: .15rem
+        }
+
+        /* Color picker row */
+        .color-row {
+            display: flex;
+            gap: .75rem;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .color-pick {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .3rem;
+            cursor: pointer
+        }
+
+        .color-pick input[type="color"] {
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 2px;
+            background: none
+        }
+
+        .color-pick input[type="color"]:focus {
+            border-color: var(--forest)
+        }
+
+        .color-pick span {
+            font-size: .68rem;
+            color: var(--text-m);
+            font-weight: 500
+        }
+
+        /* ── DYNAMIC LIST ITEMS ── */
+        .dynamic-list {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            margin-bottom: 1rem
+        }
+
+        .dynamic-item {
+            background: var(--sand);
+            border: 1px solid var(--border-l);
+            border-radius: var(--r-sm);
+            padding: 1rem 1.1rem;
+            display: grid;
+            gap: .8rem;
+            position: relative
+        }
+
+        .dynamic-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: .25rem
+        }
+
+        .dynamic-item-title {
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--forest);
+            display: flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        .item-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-l);
+            font-size: 1rem;
+            padding: .2rem .4rem;
+            border-radius: 4px;
+            transition: all .15s;
+            line-height: 1
+        }
+
+        .item-remove:hover {
+            background: #fff0ec;
+            color: #c1440e
+        }
+
+        .add-item-btn {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .6rem 1rem;
+            border: 1.5px dashed var(--forest-l);
+            border-radius: var(--r-sm);
+            background: transparent;
+            color: var(--forest);
+            font-size: .82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .18s;
+            width: 100%;
+            justify-content: center;
+            font-family: var(--font-b)
+        }
+
+        .add-item-btn:hover {
+            background: rgba(45, 106, 79, .06);
+            border-color: var(--forest)
+        }
+
+        /* ── INFO BOX ── */
+        .info-box {
+            background: rgba(45, 106, 79, .07);
+            border: 1px solid rgba(45, 106, 79, .18);
+            border-radius: var(--r-sm);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: .75rem;
+            align-items: flex-start
+        }
+
+        .info-box .ib-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: .05rem
+        }
+
+        .info-box p {
+            font-size: .83rem;
+            color: var(--forest-d);
+            line-height: 1.6
+        }
+
+        .info-box strong {
+            font-weight: 600
+        }
+
+        .tip-box {
+            background: var(--amber-l);
+            border: 1px solid #f4c89e;
+            border-radius: var(--r-sm);
+            padding: .85rem 1.1rem;
+            margin-bottom: 1.25rem;
+            font-size: .8rem;
+            color: #7a4f10;
+            display: flex;
+            gap: .6rem;
+            align-items: flex-start
+        }
+
+        /* ── FEE TABLE BUILDER ── */
+        .fee-builder {
+            width: 100%
+        }
+
+        .fee-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 36px;
+            gap: .5rem;
+            align-items: center;
+            margin-bottom: .5rem
+        }
+
+        .fee-row input {
+            padding: .5rem .65rem;
+            font-size: .82rem
+        }
+
+        .fee-row.header-row {
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--text-m);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: .25rem;
+            padding: 0 .2rem
+        }
+
+        /* ── TAGS INPUT ── */
+        .tags-wrap {
+            border: 1.5px solid var(--border);
+            border-radius: var(--r-sm);
+            padding: .5rem .7rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: .4rem;
+            cursor: text;
+            background: var(--white);
+            transition: all .18s;
+            min-height: 44px;
+            align-items: flex-start
+        }
+
+        .tags-wrap:focus-within {
+            border-color: var(--forest);
+            box-shadow: 0 0 0 3px rgba(45, 106, 79, .08)
+        }
+
+        .tag-chip {
+            background: rgba(45, 106, 79, .1);
+            color: var(--forest);
+            border-radius: 5px;
+            padding: .18rem .5rem;
+            font-size: .77rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: .3rem
+        }
+
+        .tag-chip button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--forest-l);
+            font-size: .85rem;
+            line-height: 1;
+            padding: 0 .1rem;
+            transition: color .15s
+        }
+
+        .tag-chip button:hover {
+            color: #c1440e
+        }
+
+        .tags-input {
+            border: none;
+            outline: none;
+            font-size: .82rem;
+            font-family: var(--font-b);
+            color: var(--text);
+            flex: 1;
+            min-width: 100px;
+            background: transparent;
+            padding: .15rem .1rem
+        }
+
+        /* ── NOTICE PRIORITY ── */
+        .priority-pills {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-top: .25rem
+        }
+
+        .priority-pill {
+            padding: .35rem .85rem;
+            border-radius: 20px;
+            font-size: .75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid transparent;
+            transition: all .15s
+        }
+
+        .priority-pill[data-val="event"] {
+            border-color: #d8cdb8;
+            color: var(--text-m)
+        }
+
+        .priority-pill[data-val="event"].sel,
+        .priority-pill[data-val="event"]:hover {
+            background: rgba(45, 106, 79, .1);
+            border-color: var(--forest);
+            color: var(--forest)
+        }
+
+        .priority-pill[data-val="exam"] {
+            border-color: #d8cdb8;
+            color: var(--text-m)
+        }
+
+        .priority-pill[data-val="exam"].sel,
+        .priority-pill[data-val="exam"]:hover {
+            background: rgba(82, 121, 111, .1);
+            border-color: #52796f;
+            color: #2d6a4f
+        }
+
+        .priority-pill[data-val="holiday"] {
+            border-color: #d8cdb8;
+            color: var(--text-m)
+        }
+
+        .priority-pill[data-val="holiday"].sel,
+        .priority-pill[data-val="holiday"]:hover {
+            background: #fde8d4;
+            border-color: var(--amber);
+            color: #8b5e3c
+        }
+
+        .priority-pill[data-val="urgent"] {
+            border-color: #d8cdb8;
+            color: var(--text-m)
+        }
+
+        .priority-pill[data-val="urgent"].sel,
+        .priority-pill[data-val="urgent"]:hover {
+            background: #fff0ec;
+            border-color: #c1440e;
+            color: #c1440e
+        }
+
+        /* ── UPLOAD ZONE ── */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--r);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            background: var(--sand)
+        }
+
+        .upload-zone:hover {
+            border-color: var(--forest-l);
+            background: rgba(45, 106, 79, .03)
+        }
+
+        .upload-zone .uz-icon {
+            font-size: 2rem;
+            margin-bottom: .5rem;
+            display: block
+        }
+
+        .upload-zone p {
+            font-size: .84rem;
+            color: var(--text-m);
+            margin-bottom: .25rem
+        }
+
+        .upload-zone small {
+            font-size: .74rem;
+            color: var(--text-l)
+        }
+
+        .upload-zone input {
+            display: none
+        }
+
+        /* ── STEP NAVIGATION ── */
+        .form-nav-bar {
+            background: var(--white);
+            border-top: 1px solid var(--border-l);
+            padding: 1.25rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            bottom: 0;
+            z-index: 50
+        }
+
+        .form-nav-bar .nav-info {
+            font-size: .8rem;
+            color: var(--text-l)
+        }
+
+        .form-nav-bar .nav-info strong {
+            color: var(--text);
+            font-weight: 600
+        }
+
+        /* ── PREVIEW / EXPORT ── */
+        .preview-card {
+            background: var(--white);
+            border-radius: var(--r);
+            border: 1px solid var(--border-l);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow)
+        }
+
+        .preview-card h3 {
+            font-family: var(--font-d);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--forest-d);
+            border-bottom: 1px solid var(--border-l);
+            padding-bottom: .75rem
+        }
+
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: .55rem 0;
+            border-bottom: 1px solid var(--sand-dd)
+        }
+
+        .preview-row:last-child {
+            border-bottom: none
+        }
+
+        .preview-row .pr-label {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text-m);
+            min-width: 180px;
+            flex-shrink: 0
+        }
+
+        .preview-row .pr-value {
+            font-size: .85rem;
+            color: var(--text);
+            text-align: right;
+            word-break: break-all
+        }
+
+        .preview-row .pr-value.empty {
+            color: var(--text-l);
+            font-style: italic
+        }
+
+        .export-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem
+        }
+
+        .export-card {
+            background: var(--white);
+            border: 1.5px solid var(--border-l);
+            border-radius: var(--r);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s
+        }
+
+        .export-card:hover {
+            border-color: var(--forest);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px)
+        }
+
+        .export-card .ec-icon {
+            font-size: 2rem;
+            margin-bottom: .5rem;
+            display: block
+        }
+
+        .export-card h4 {
+            font-weight: 700;
+            font-size: .9rem;
+            margin-bottom: .25rem
+        }
+
+        .export-card p {
+            font-size: .76rem;
+            color: var(--text-m)
+        }
+
+        /* ── TOAST ── */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--forest-d);
+            color: #e8f5ee;
+            padding: .85rem 1.5rem;
+            border-radius: var(--r-sm);
+            font-size: .84rem;
+            font-weight: 500;
+            z-index: 9999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all .3s;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            box-shadow: var(--shadow-lg)
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1
+        }
+
+        /* ── SECTION TRACKER ── */
+        .section-tracker {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem
+        }
+
+        .st-pill {
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+            padding: .3rem .7rem;
+            border-radius: 20px;
+            font-size: .72rem;
+            font-weight: 600;
+            border: 1.5px solid var(--border);
+            color: var(--text-m)
+        }
+
+        .st-pill.done {
+            background: rgba(45, 106, 79, .1);
+            border-color: rgba(45, 106, 79, .3);
+            color: var(--forest)
+        }
+
+        .st-pill.current {
+            background: var(--terra);
+            border-color: var(--terra);
+            color: #fff
+        }
+
+        /* ── ACCORDION ── */
+        .accordion {
+            border: 1px solid var(--border-l);
+            border-radius: var(--r);
+            overflow: hidden;
+            margin-bottom: 1rem
+        }
+
+        .acc-header {
+            padding: 1rem 1.25rem;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background .15s
+        }
+
+        .acc-header:hover {
+            background: var(--sand)
+        }
+
+        .acc-header h4 {
+            font-weight: 600;
+            font-size: .9rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        .acc-arrow {
+            font-size: .9rem;
+            transition: transform .25s;
+            color: var(--text-l)
+        }
+
+        .acc-body {
+            display: none;
+            padding: 1.25rem;
+            background: var(--white);
+            border-top: 1px solid var(--border-l)
+        }
+
+        .acc-body.open {
+            display: block
+        }
+
+        .accordion.open .acc-arrow {
+            transform: rotate(180deg)
+        }
+
+        /* ── MOBILE ── */
+        @media(max-width:768px) {
+            .app {
+                grid-template-columns: 1fr
+            }
+
+            .sidebar {
+                display: none
+            }
+
+            .form-grid-2,
+            .form-grid-3 {
+                grid-template-columns: 1fr
+            }
+
+            .fee-row {
+                grid-template-columns: 1fr 1fr;
+                gap: .4rem
+            }
+
+            .export-actions {
+                grid-template-columns: 1fr
+            }
+
+            .form-page {
+                padding: 1.25rem 1rem 4rem
+            }
+
+            .main-header {
+                padding: 1rem
+            }
+
+            .form-nav-bar {
+                padding: 1rem
+            }
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar {
+            width: 5px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--sand)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #84b5a0;
+            border-radius: 3px
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translateY(12px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .form-page.active {
+            animation: fadeSlide .3s ease
+        }
+
+        .dynamic-item {
+            animation: fadeSlide .25s ease
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- ════════ SIDEBAR ════════ -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon">📋</div>
+                <div class="brand-title">School Data Form</div>
+                <div class="brand-sub">Fill once · Update anytime</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">Basic Info</div>
+                <button class="nav-item active" onclick="goTo(0)">
+                    <span class="ni-icon">🏫</span>
+                    <span class="ni-label">School Identity</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(1)">
+                    <span class="ni-icon">📍</span>
+                    <span class="ni-label">Contact & Location</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(2)">
+                    <span class="ni-icon">👨‍🏫</span>
+                    <span class="ni-label">Principal & Leadership</span>
+                    <span class="ni-check">✓</span>
+                </button>
+
+                <div class="nav-section-label">About School</div>
+                <button class="nav-item" onclick="goTo(3)">
+                    <span class="ni-icon">📖</span>
+                    <span class="ni-label">History & Vision</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(4)">
+                    <span class="ni-icon">📊</span>
+                    <span class="ni-label">Key Statistics</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(5)">
+                    <span class="ni-icon">🏟️</span>
+                    <span class="ni-label">Infrastructure</span>
+                    <span class="ni-check">✓</span>
+                </button>
+
+                <div class="nav-section-label">Academics</div>
+                <button class="nav-item" onclick="goTo(6)">
+                    <span class="ni-icon">📚</span>
+                    <span class="ni-label">Curriculum & Boards</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(7)">
+                    <span class="ni-icon">👩‍🏫</span>
+                    <span class="ni-label">Faculty Members</span>
+                    <span class="ni-badge" id="fac-count">0</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(8)">
+                    <span class="ni-icon">🎓</span>
+                    <span class="ni-label">Admissions</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(9)">
+                    <span class="ni-icon">💰</span>
+                    <span class="ni-label">Fee Structure</span>
+                    <span class="ni-check">✓</span>
+                </button>
+
+                <div class="nav-section-label">Live Content</div>
+                <button class="nav-item" onclick="goTo(10)">
+                    <span class="ni-icon">🔔</span>
+                    <span class="ni-label">Notices & Events</span>
+                    <span class="ni-badge" id="not-count">0</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(11)">
+                    <span class="ni-icon">🖼️</span>
+                    <span class="ni-label">Gallery Albums</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(12)">
+                    <span class="ni-icon">🌟</span>
+                    <span class="ni-label">Student Spotlight</span>
+                    <span class="ni-check">✓</span>
+                </button>
+                <button class="nav-item" onclick="goTo(13)">
+                    <span class="ni-icon">🏅</span>
+                    <span class="ni-label">Achievements</span>
+                    <span class="ni-check">✓</span>
+                </button>
+
+                <div class="nav-section-label">Appearance</div>
+                <button class="nav-item" onclick="goTo(14)">
+                    <span class="ni-icon">🎨</span>
+                    <span class="ni-label">Colors & Branding</span>
+                    <span class="ni-check">✓</span>
+                </button>
+
+                <div class="nav-section-label">Finish</div>
+                <button class="nav-item" onclick="goTo(15)">
+                    <span class="ni-icon">✅</span>
+                    <span class="ni-label">Preview & Export</span>
+                    <span class="ni-check">✓</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="progress-bar-wrap">
+                    <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+                </div>
+                <div class="progress-text" id="progress-text">0 of 16 sections filled</div>
+            </div>
+        </aside>
+
+        <!-- ════════ MAIN ════════ -->
+        <main class="main">
+            <div class="main-header">
+                <div>
+                    <h1 id="page-title">School Identity</h1>
+                    <p id="page-desc">Basic information that appears across your entire website</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-ghost btn-sm" onclick="saveDraft()">💾 Save Draft</button>
+                    <button class="btn btn-terra btn-sm" onclick="applyToWebsite()" title="Instantly push all form data to Real.html">⚡ Apply to Website</button>
+                    <button class="btn btn-primary btn-sm" onclick="goTo(15)">Preview & Export →</button>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 0: SCHOOL IDENTITY ════ -->
+            <div class="form-page active" id="page-0">
+                <div class="form-page-header">
+                    <span class="page-icon">🏫</span>
+                    <h2>School Identity</h2>
+                    <p>This information appears in the header, footer, and throughout your website. Make it accurate and
+                        professional.</p>
+                </div>
+
+                <div class="info-box">
+                    <span class="ib-icon">ℹ️</span>
+                    <p>Fields marked <strong>*</strong> are required for the website to display correctly. Others are
+                        optional but recommended.</p>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🏷️</span> School Name & Tagline</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full School Name <span class="required">*</span></label>
+                            <input type="text" id="school-name" placeholder="e.g. Greenfield Public School"
+                                maxlength="100" oninput="updateCount(this,'sn-count')">
+                            <div class="char-count"><span id="sn-count">0</span>/100</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Short Name / Abbreviation <span class="hint">(for mobile / logo)</span></label>
+                            <input type="text" id="school-short" placeholder="e.g. GPS" maxlength="20">
+                        </div>
+                        <div class="form-group">
+                            <label>Tagline / Motto <span class="required">*</span></label>
+                            <input type="text" id="school-tagline" placeholder="e.g. Excellence in Education Since 1975"
+                                maxlength="120" oninput="updateCount(this,'tl-count')">
+                            <div class="char-count"><span id="tl-count">0</span>/120</div>
+                        </div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label>Establishment Year <span class="required">*</span></label>
+                                <input type="number" id="school-estd" placeholder="e.g. 1975" min="1800" max="2024">
+                            </div>
+                            <div class="form-group">
+                                <label>Board / Affiliation <span class="required">*</span></label>
+                                <select id="school-board">
+                                    <option value="">Select board...</option>
+                                    <option value="CBSE">CBSE</option>
+                                    <option value="ICSE">ICSE / ISC</option>
+                                    <option value="State Board">State Board</option>
+                                    <option value="IB">IB (International Baccalaureate)</option>
+                                    <option value="IGCSE">Cambridge IGCSE</option>
+                                    <option value="SSC">SSC (Maharashtra/Telangana)</option>
+                                    <option value="SSLC">SSLC (Karnataka/Kerala/TN)</option>
+                                    <option value="Multiple">Multiple Boards</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Affiliation / Registration Number</label>
+                            <input type="text" id="school-affno" placeholder="e.g. CBSE Affiliation No. 1234567">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🏫</span> School Type & Level</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label>School Type <span class="required">*</span></label>
+                            <select id="school-type">
+                                <option value="">Select type...</option>
+                                <option value="Co-Education">Co-Education</option>
+                                <option value="Boys Only">Boys Only</option>
+                                <option value="Girls Only">Girls Only</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Medium of Instruction <span class="required">*</span></label>
+                            <select id="school-medium">
+                                <option value="">Select medium...</option>
+                                <option value="English">English</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Telugu">Telugu</option>
+                                <option value="Tamil">Tamil</option>
+                                <option value="Kannada">Kannada</option>
+                                <option value="Marathi">Marathi</option>
+                                <option value="English & Hindi">English & Hindi (Bilingual)</option>
+                                <option value="English & Regional">English & Regional (Bilingual)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Classes Offered — From <span class="required">*</span></label>
+                            <select id="class-from">
+                                <option value="">From...</option>
+                                <option value="Nursery">Nursery</option>
+                                <option value="LKG">LKG</option>
+                                <option value="UKG">UKG</option>
+                                <option value="Class I">Class I</option>
+                                <option value="Class VI">Class VI</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Classes Offered — To <span class="required">*</span></label>
+                            <select id="class-to">
+                                <option value="">To...</option>
+                                <option value="Class V">Class V</option>
+                                <option value="Class VIII">Class VIII</option>
+                                <option value="Class X">Class X</option>
+                                <option value="Class XII">Class XII</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🖼️</span> Logo & Branding</h3>
+                    <div class="form-grid form-grid-2">
+                        <div>
+                            <label
+                                style="font-size:.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:.4rem">School
+                                Logo <span style="color:var(--text-l);font-weight:400">(PNG/SVG, transparent
+                                    bg)</span></label>
+                            <label class="upload-zone" for="logo-upload">
+                                <span class="uz-icon">🖼️</span>
+                                <p>Click to upload logo</p>
+                                <small>PNG, SVG, JPG · Max 2MB · Recommended 200×200px</small>
+                                <input type="file" id="logo-upload" accept="image/*"
+                                    onchange="previewImg(this,'logo-preview')">
+                            </label>
+                            <img id="logo-preview"
+                                style="max-width:80px;margin-top:.5rem;display:none;border-radius:8px">
+                        </div>
+                        <div>
+                            <label
+                                style="font-size:.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:.4rem">School
+                                Emblem / Crest <span
+                                    style="color:var(--text-l);font-weight:400">(optional)</span></label>
+                            <label class="upload-zone" for="emblem-upload">
+                                <span class="uz-icon">🏛️</span>
+                                <p>Click to upload emblem</p>
+                                <small>PNG, SVG · Transparent background preferred</small>
+                                <input type="file" id="emblem-upload" accept="image/*"
+                                    onchange="previewImg(this,'emblem-preview')">
+                            </label>
+                            <img id="emblem-preview"
+                                style="max-width:80px;margin-top:.5rem;display:none;border-radius:8px">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:1rem">
+                        <label>School Emoji Icon <span class="hint">(fallback if no logo · shown in nav)</span></label>
+                        <input type="text" id="school-emoji" placeholder="e.g. 🏫 or 🎓 or 📚" maxlength="4"
+                            style="width:120px">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🌐</span> Social Media & Website</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Official Website URL</label><input type="url" id="web-url"
+                                placeholder="https://www.yourschool.edu.in"></div>
+                        <div class="form-group"><label>Facebook Page</label><input type="url" id="social-fb"
+                                placeholder="https://facebook.com/yourschool"></div>
+                        <div class="form-group"><label>Instagram</label><input type="url" id="social-ig"
+                                placeholder="https://instagram.com/yourschool"></div>
+                        <div class="form-group"><label>YouTube Channel</label><input type="url" id="social-yt"
+                                placeholder="https://youtube.com/c/yourschool"></div>
+                        <div class="form-group"><label>Twitter / X</label><input type="url" id="social-tw"
+                                placeholder="https://twitter.com/yourschool"></div>
+                        <div class="form-group"><label>WhatsApp Business Number</label><input type="tel" id="social-wa"
+                                placeholder="+91 98765 43210"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 1: CONTACT ════ -->
+            <div class="form-page" id="page-1">
+                <div class="form-page-header">
+                    <span class="page-icon">📍</span>
+                    <h2>Contact & Location</h2>
+                    <p>This appears on your Contact Us page and footer. Keep it up to date.</p>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🏠</span> Physical Address</h3>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Street / Plot Address <span
+                                    class="required">*</span></label><input type="text" id="addr-street"
+                                placeholder="e.g. Plot No. 45, Greenfield Road, Near Cyber Towers"></div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group"><label>Area / Locality <span class="required">*</span></label><input
+                                    type="text" id="addr-area" placeholder="e.g. Madhapur"></div>
+                            <div class="form-group"><label>City <span class="required">*</span></label><input
+                                    type="text" id="addr-city" placeholder="e.g. Hyderabad"></div>
+                        </div>
+                        <div class="form-grid form-grid-3">
+                            <div class="form-group"><label>State <span class="required">*</span></label><input
+                                    type="text" id="addr-state" placeholder="e.g. Telangana"></div>
+                            <div class="form-group"><label>PIN Code <span class="required">*</span></label><input
+                                    type="text" id="addr-pin" placeholder="e.g. 500 081" maxlength="7"></div>
+                            <div class="form-group"><label>District</label><input type="text" id="addr-dist"
+                                    placeholder="e.g. Hyderabad"></div>
+                        </div>
+                        <div class="form-group"><label>Google Maps Embed Link <span class="hint">(paste the Share →
+                                    Embed URL)</span></label><textarea id="addr-map"
+                                placeholder="https://www.google.com/maps/embed?pb=..." rows="2"></textarea></div>
+                        <div class="form-group"><label>Google Maps Direct Link <span class="hint">(for "Open in Maps"
+                                    button)</span></label><input type="url" id="addr-maplink"
+                                placeholder="https://maps.google.com/?q=..."></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">📞</span> Phone Numbers</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Main Office <span class="required">*</span></label><input
+                                type="tel" id="ph-main" placeholder="+91 40 4567 8900"></div>
+                        <div class="form-group"><label>Admissions Desk</label><input type="tel" id="ph-adm"
+                                placeholder="+91 98765 43210"></div>
+                        <div class="form-group"><label>Principal's Office</label><input type="tel" id="ph-prin"
+                                placeholder="+91 98765 43211"></div>
+                        <div class="form-group"><label>Transport / Bus Helpline</label><input type="tel" id="ph-bus"
+                                placeholder="+91 98765 43212"></div>
+                        <div class="form-group"><label>Fee Counter</label><input type="tel" id="ph-fee"
+                                placeholder="+91 40 4567 8901"></div>
+                        <div class="form-group"><label>Emergency Contact</label><input type="tel" id="ph-sos"
+                                placeholder="+91 98765 43213"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">✉️</span> Email Addresses</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>General Enquiries <span class="required">*</span></label><input
+                                type="email" id="em-general" placeholder="info@yourschool.edu.in"></div>
+                        <div class="form-group"><label>Admissions</label><input type="email" id="em-adm"
+                                placeholder="admissions@yourschool.edu.in"></div>
+                        <div class="form-group"><label>Principal</label><input type="email" id="em-prin"
+                                placeholder="principal@yourschool.edu.in"></div>
+                        <div class="form-group"><label>Accounts / Fee</label><input type="email" id="em-fee"
+                                placeholder="accounts@yourschool.edu.in"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">⏰</span> Office Hours</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Monday – Friday</label><input type="text" id="hr-weekday"
+                                placeholder="e.g. 8:00 AM – 4:00 PM"></div>
+                        <div class="form-group"><label>Saturday</label><input type="text" id="hr-sat"
+                                placeholder="e.g. 9:00 AM – 1:00 PM"></div>
+                        <div class="form-group"><label>Sunday</label><input type="text" id="hr-sun"
+                                placeholder="e.g. Closed" value="Closed"></div>
+                        <div class="form-group"><label>Public Holidays</label><input type="text" id="hr-hol"
+                                placeholder="e.g. Closed" value="Closed"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 2: PRINCIPAL ════ -->
+            <div class="form-page" id="page-2">
+                <div class="form-page-header">
+                    <span class="page-icon">👨‍🏫</span>
+                    <h2>Principal & Leadership</h2>
+                    <p>The Principal's message and leadership team display on your About Us page.</p>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🎖️</span> Principal Details</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Full Name <span class="required">*</span></label><input
+                                type="text" id="prin-name" placeholder="e.g. Dr. Suresh Kumar Rao"></div>
+                        <div class="form-group"><label>Qualification / Degree</label><input type="text" id="prin-qual"
+                                placeholder="e.g. M.Ed., Ph.D. in Education"></div>
+                        <div class="form-group"><label>Experience</label><input type="text" id="prin-exp"
+                                placeholder="e.g. 25+ years in Education Leadership"></div>
+                        <div class="form-group"><label>Designation</label><input type="text" id="prin-desig"
+                                placeholder="e.g. Principal" value="Principal"></div>
+                        <div class="form-group"><label>Email</label><input type="email" id="prin-email"
+                                placeholder="principal@yourschool.edu.in"></div>
+                        <div class="form-group"><label>Phone</label><input type="tel" id="prin-ph"
+                                placeholder="+91 98765 43211"></div>
+                    </div>
+                    <div class="form-group" style="margin-top:.75rem">
+                        <label>Principal's Message <span class="required">*</span> <span class="hint">(Shown on About Us
+                                page)</span></label>
+                        <textarea id="prin-msg" rows="5"
+                            placeholder="Write a warm, personal message from the Principal to parents and prospective students..."
+                            maxlength="600" oninput="updateCount(this,'pm-count')"></textarea>
+                        <div class="char-count"><span id="pm-count">0</span>/600</div>
+                    </div>
+                    <div style="margin-top:1rem">
+                        <label
+                            style="font-size:.78rem;font-weight:600;color:var(--text);display:block;margin-bottom:.4rem">Principal's
+                            Photo</label>
+                        <label class="upload-zone" for="prin-photo" style="max-width:300px">
+                            <span class="uz-icon">👤</span>
+                            <p>Upload professional photo</p>
+                            <small>JPG/PNG · Square recommended · Max 1MB</small>
+                            <input type="file" id="prin-photo" accept="image/*"
+                                onchange="previewImg(this,'prin-preview')">
+                        </label>
+                        <img id="prin-preview"
+                            style="width:80px;height:80px;object-fit:cover;border-radius:50%;margin-top:.5rem;display:none;border:3px solid var(--amber)">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">👥</span> Management / Trust Details</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Trust / Society Name</label><input type="text" id="trust-name"
+                                placeholder="e.g. Greenfield Education Trust"></div>
+                        <div class="form-group"><label>Chairman / Founder Name</label><input type="text"
+                                id="trust-chair" placeholder="e.g. Mr. Rajendra Prasad Sharma"></div>
+                        <div class="form-group"><label>Founded By</label><input type="text" id="trust-founder"
+                                placeholder="Same as chairman, or separate name"></div>
+                        <div class="form-group"><label>Trust Registration No.</label><input type="text" id="trust-reg"
+                                placeholder="e.g. TRN/2024/12345"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 3: HISTORY & VISION ════ -->
+            <div class="form-page" id="page-3">
+                <div class="form-page-header">
+                    <span class="page-icon">📖</span>
+                    <h2>History, Vision & Mission</h2>
+                    <p>Your school's story, values, and purpose — shown on the About Us page.</p>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">📜</span> School History</h3>
+                    <div class="tip-box">
+                        <span>💡</span>
+                        <span>Write in 2–3 paragraphs. Include: when it was founded, by whom, the original vision, how
+                            it grew, and where it stands today.</span>
+                    </div>
+                    <div class="form-group">
+                        <label>History Paragraph 1 — Founding Story <span class="required">*</span></label>
+                        <textarea id="hist-p1" rows="4"
+                            placeholder="e.g. Founded in 1975 by Mr. Rajendra Prasad Sharma, Greenfield Public School began as a modest institution with 80 students and a vision to bring quality education to Hyderabad..."
+                            maxlength="500" oninput="updateCount(this,'h1-count')"></textarea>
+                        <div class="char-count"><span id="h1-count">0</span>/500</div>
+                    </div>
+                    <div class="form-group">
+                        <label>History Paragraph 2 — Growth & Today</label>
+                        <textarea id="hist-p2" rows="4"
+                            placeholder="e.g. Today, we serve over 2,400 students from Nursery to Class XII, backed by 120+ experienced educators across 8 acres of world-class infrastructure..."
+                            maxlength="500" oninput="updateCount(this,'h2-count')"></textarea>
+                        <div class="char-count"><span id="h2-count">0</span>/500</div>
+                    </div>
+                    <div class="form-group">
+                        <label>History Paragraph 3 — Alumni & Legacy</label>
+                        <textarea id="hist-p3" rows="3"
+                            placeholder="e.g. Our alumni have gone on to become doctors, engineers, artists, and civil servants..."
+                            maxlength="400" oninput="updateCount(this,'h3-count')"></textarea>
+                        <div class="char-count"><span id="h3-count">0</span>/400</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><span class="sh-icon">🎯</span> Vision & Mission</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Vision Statement <span class="required">*</span></label>
+                            <textarea id="school-vision" rows="3"
+                                placeholder="e.g. To be a globally recognized institution that empowers every student with knowledge, values, and skills to thrive in a rapidly evolving world..."
+                                maxlength="300" oninput="updateCount(this,'vis-count')"></textarea>
+                            <div class="char-count"><span id="vis-count">0</span>/300</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mission Statement <span class="required">*</span></label>
+                            <textarea id="school-mission" rows="3"
+                                placeholder="e.g. To provide a safe, inclusive, and stimulating learning environment where academic rigor meets holistic development..."
+                                maxlength="300" oninput="updateCount(this,'mis-count')"></textarea>
+                            <div class="char-count"><span id="mis-count">0</span>/300</div>
+                        </div>
+                        <div class="form-group">
+                            <label>Core Values <span class="hint">(type a value, press Enter to add)</span></label>
+                            <div class="tags-wrap" id="values-tags"
+                                onclick="document.getElementById('values-input').focus()">
+                                <input class="tags-input" id="values-input" placeholder="e.g. Integrity, Excellence..."
+                                    onkeydown="addTag(event,'values-tags')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 4: STATISTICS ════ -->
+            <div class="form-page" id="page-4">
+                <div class="form-page-header">
+                    <span class="page-icon">📊</span>
+                    <h2>Key Statistics</h2>
+                    <p>These numbers appear in the hero banner stats strip and the animated counter section.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🔢</span> School Numbers</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Total Students Enrolled <span
+                                    class="required">*</span></label><input type="number" id="stat-students"
+                                placeholder="e.g. 2400" min="1"></div>
+                        <div class="form-group"><label>Total Faculty / Staff <span
+                                    class="required">*</span></label><input type="number" id="stat-faculty"
+                                placeholder="e.g. 120" min="1"></div>
+                        <div class="form-group"><label>Years of Operation <span class="required">*</span></label><input
+                                type="number" id="stat-years" placeholder="e.g. 49" min="1"></div>
+                        <div class="form-group"><label>Total Alumni</label><input type="number" id="stat-alumni"
+                                placeholder="e.g. 3000" min="0"></div>
+                        <div class="form-group"><label>Campus Area (in acres)</label><input type="number"
+                                id="stat-campus" placeholder="e.g. 8" step="0.5" min="0"></div>
+                        <div class="form-group"><label>Number of Classrooms</label><input type="number" id="stat-rooms"
+                                placeholder="e.g. 60" min="1"></div>
+                        <div class="form-group"><label>Total Awards Won</label><input type="number" id="stat-awards"
+                                placeholder="e.g. 50" min="0"></div>
+                        <div class="form-group"><label>Last Board Pass Rate (%)</label><input type="number"
+                                id="stat-pass" placeholder="e.g. 98.4" min="0" max="100" step="0.1"></div>
+                        <div class="form-group"><label>Class X Topper Score (out of 500)</label><input type="number"
+                                id="stat-top10" placeholder="e.g. 498" min="0" max="500"></div>
+                        <div class="form-group"><label>Class XII Topper Score (out of 500)</label><input type="number"
+                                id="stat-top12" placeholder="e.g. 499" min="0" max="500"></div>
+                        <div class="form-group"><label>Parent Satisfaction Rating (out of 5)</label><input type="number"
+                                id="stat-rating" placeholder="e.g. 4.9" min="0" max="5" step="0.1"></div>
+                        <div class="form-group"><label>Number of Clubs / Activities</label><input type="number"
+                                id="stat-clubs" placeholder="e.g. 25" min="0"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 5: INFRASTRUCTURE ════ -->
+            <div class="form-page" id="page-5">
+                <div class="form-page-header">
+                    <span class="page-icon">🏟️</span>
+                    <h2>Infrastructure & Facilities</h2>
+                    <p>Shown in the About Us page as feature cards. Add all your major facilities.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🏗️</span> Facilities</h3>
+                    <div class="tip-box"><span>💡</span><span>Add each major facility. These display as cards on your
+                            website.</span></div>
+                    <div class="dynamic-list" id="infra-list"></div>
+                    <button class="add-item-btn" onclick="addInfra()">+ Add Facility</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🚌</span> Transport</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Transport Available?</label><select id="transport-yn">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select></div>
+                        <div class="form-group"><label>Number of Buses/Vans</label><input type="number"
+                                id="transport-buses" placeholder="e.g. 20"></div>
+                        <div class="form-group"><label>Areas Covered</label><input type="text" id="transport-areas"
+                                placeholder="e.g. Madhapur, Gachibowli, Kondapur..."></div>
+                        <div class="form-group"><label>GPS Tracking?</label><select id="transport-gps">
+                                <option value="yes">Yes — GPS Tracked</option>
+                                <option value="no">No</option>
+                            </select></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 6: CURRICULUM ════ -->
+            <div class="form-page" id="page-6">
+                <div class="form-page-header">
+                    <span class="page-icon">📚</span>
+                    <h2>Curriculum & Academics</h2>
+                    <p>Shown on the Academics page. Include streams, subjects, and special programmes.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🎓</span> Streams & Sections</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Streams Offered at Class XI–XII</label>
+                            <div class="tags-wrap" id="streams-tags"
+                                onclick="document.getElementById('streams-input').focus()">
+                                <input class="tags-input" id="streams-input" placeholder="e.g. Science, Commerce..."
+                                    onkeydown="addTag(event,'streams-tags')">
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Optional Subjects Available</label>
+                            <div class="tags-wrap" id="optsubj-tags"
+                                onclick="document.getElementById('optsubj-input').focus()">
+                                <input class="tags-input" id="optsubj-input"
+                                    placeholder="e.g. Computer Science, Fine Arts..."
+                                    onkeydown="addTag(event,'optsubj-tags')">
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Languages Taught</label>
+                            <div class="tags-wrap" id="lang-tags"
+                                onclick="document.getElementById('lang-input').focus()">
+                                <input class="tags-input" id="lang-input" placeholder="e.g. Hindi, Telugu, French..."
+                                    onkeydown="addTag(event,'lang-tags')">
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Special Programmes</label>
+                            <div class="tags-wrap" id="prog-tags"
+                                onclick="document.getElementById('prog-input').focus()">
+                                <input class="tags-input" id="prog-input"
+                                    placeholder="e.g. STEM Club, Coding, Robotics..."
+                                    onkeydown="addTag(event,'prog-tags')">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🏫</span> Departments</h3>
+                    <div class="dynamic-list" id="dept-list"></div>
+                    <button class="add-item-btn" onclick="addDept()">+ Add Department</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📝</span> Curriculum Description</h3>
+                    <div class="form-group">
+                        <label>About Your Curriculum <span class="hint">(shown on Academics page)</span></label>
+                        <textarea id="curriculum-desc" rows="5"
+                            placeholder="Describe your teaching approach, special methodology, NEP 2020 alignment, project-based learning, digital tools used, etc."
+                            maxlength="600" oninput="updateCount(this,'cur-count')"></textarea>
+                        <div class="char-count"><span id="cur-count">0</span>/600</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 7: FACULTY ════ -->
+            <div class="form-page" id="page-7">
+                <div class="form-page-header">
+                    <span class="page-icon">👩‍🏫</span>
+                    <h2>Faculty Members</h2>
+                    <p>Add your key teachers and staff. These display as cards on the Academics page.</p>
+                </div>
+                <div class="info-box">
+                    <span class="ib-icon">💡</span>
+                    <p>You don't need to add every teacher. <strong>Highlight 6–12 key faculty members</strong> —
+                        department heads and senior staff work best.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">👨‍🏫</span> Faculty List <span id="fac-label"
+                            style="font-family:var(--font-b);font-weight:400;color:var(--text-m);font-size:.82rem;margin-left:.5rem">0
+                            added</span></h3>
+                    <div class="dynamic-list" id="faculty-list"></div>
+                    <button class="add-item-btn" onclick="addFaculty()">+ Add Faculty Member</button>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 8: ADMISSIONS ════ -->
+            <div class="form-page" id="page-8">
+                <div class="form-page-header">
+                    <span class="page-icon">🎓</span>
+                    <h2>Admissions</h2>
+                    <p>All admission-related info shown on your Admissions page.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📅</span> Admission Season</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Academic Year <span class="required">*</span></label><input
+                                type="text" id="adm-year" placeholder="e.g. 2025–26"></div>
+                        <div class="form-group"><label>Application Start Date</label><input type="date" id="adm-start">
+                        </div>
+                        <div class="form-group"><label>Application Last Date <span
+                                    class="required">*</span></label><input type="date" id="adm-last"></div>
+                        <div class="form-group"><label>Classes Open for Admission</label><input type="text"
+                                id="adm-classes" placeholder="e.g. Nursery to Class IX and Class XI"></div>
+                        <div class="form-group"><label>New Academic Session Starts</label><input type="date"
+                                id="adm-session"></div>
+                        <div class="form-group"><label>Entrance Test Date</label><input type="date" id="adm-test"></div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">✅</span> Eligibility & Process</h3>
+                    <div class="tip-box"><span>💡</span><span>Add eligibility criteria for each class group. These
+                            display as cards on the Admissions page.</span></div>
+                    <div class="dynamic-list" id="eligibility-list"></div>
+                    <button class="add-item-btn" onclick="addEligibility()">+ Add Eligibility Criteria</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🔢</span> Admission Steps</h3>
+                    <div class="dynamic-list" id="adm-steps-list"></div>
+                    <button class="add-item-btn" onclick="addAdmStep()">+ Add Step</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📄</span> Required Documents</h3>
+                    <div class="form-group">
+                        <label>Documents Required for Admission</label>
+                        <div class="tags-wrap" id="docs-tags" onclick="document.getElementById('docs-input').focus()">
+                            <input class="tags-input" id="docs-input" placeholder="e.g. Birth Certificate, School TC..."
+                                onkeydown="addTag(event,'docs-tags')">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 9: FEE STRUCTURE ════ -->
+            <div class="form-page" id="page-9">
+                <div class="form-page-header">
+                    <span class="page-icon">💰</span>
+                    <h2>Fee Structure</h2>
+                    <p>Your fee table shown on the Admissions page. Add all applicable fee rows.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📋</span> Fee Table <span
+                            style="font-family:var(--font-b);font-size:.78rem;color:var(--text-m);font-weight:400;margin-left:.5rem">All
+                            amounts in ₹ (Indian Rupees)</span></h3>
+                    <div class="tip-box"><span>💡</span><span>Fill per-year amounts. Leave blank if a fee doesn't apply
+                            to a class.</span></div>
+                    <div class="fee-builder">
+                        <div class="fee-row header-row">
+                            <div>Class</div>
+                            <div>Tuition (Annual)</div>
+                            <div>Dev. Fee</div>
+                            <div>Transport</div>
+                            <div>Total</div>
+                            <div></div>
+                        </div>
+                        <div id="fee-rows"></div>
+                    </div>
+                    <button class="add-item-btn" style="margin-top:.75rem" onclick="addFeeRow()">+ Add Fee Row</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📥</span> Downloadable Forms</h3>
+                    <div class="tip-box"><span>💡</span><span>List forms parents can download. You'll upload the actual
+                            PDFs separately when publishing.</span></div>
+                    <div class="dynamic-list" id="forms-list"></div>
+                    <button class="add-item-btn" onclick="addForm()">+ Add Downloadable Form</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">💳</span> Payment Methods</h3>
+                    <div class="form-group">
+                        <label>Accepted Payment Methods</label>
+                        <div class="tags-wrap" id="payment-tags"
+                            onclick="document.getElementById('payment-input').focus()">
+                            <input class="tags-input" id="payment-input"
+                                placeholder="e.g. Cash, Online NEFT, UPI, Cheque..."
+                                onkeydown="addTag(event,'payment-tags')">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top:1rem">
+                        <label>Bank Account / UPI ID for Fee Payment <span class="hint">(optional, shown on fee
+                                page)</span></label>
+                        <input type="text" id="fee-bank"
+                            placeholder="e.g. School Name A/C: 1234567890, IFSC: SBIN0001234">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 10: NOTICES ════ -->
+            <div class="form-page" id="page-10">
+                <div class="form-page-header">
+                    <span class="page-icon">🔔</span>
+                    <h2>Notices, Events & Holidays</h2>
+                    <p>Dynamic content shown on the Notices page. You can add more anytime.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📢</span> Notices & Circulars</h3>
+                    <div class="dynamic-list" id="notices-list"></div>
+                    <button class="add-item-btn" onclick="addNotice()">+ Add Notice</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📅</span> Upcoming Events</h3>
+                    <div class="dynamic-list" id="events-list"></div>
+                    <button class="add-item-btn" onclick="addEvent()">+ Add Event</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🗓️</span> Holiday List</h3>
+                    <div class="dynamic-list" id="holidays-list"></div>
+                    <button class="add-item-btn" onclick="addHoliday()">+ Add Holiday</button>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 11: GALLERY ════ -->
+            <div class="form-page" id="page-11">
+                <div class="form-page-header">
+                    <span class="page-icon">🖼️</span>
+                    <h2>Gallery Albums</h2>
+                    <p>Define your gallery albums. Photos will be uploaded separately when publishing your site.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📸</span> Gallery Albums</h3>
+                    <div class="info-box"><span class="ib-icon">ℹ️</span>
+                        <p>Create album names and categories. Each album will appear as a filterable category in your
+                            gallery. <strong>Upload actual photos when publishing.</strong></p>
+                    </div>
+                    <div class="dynamic-list" id="gallery-list"></div>
+                    <button class="add-item-btn" onclick="addGallery()">+ Add Album</button>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 12: SPOTLIGHT ════ -->
+            <div class="form-page" id="page-12">
+                <div class="form-page-header">
+                    <span class="page-icon">🌟</span>
+                    <h2>Student Spotlight</h2>
+                    <p>Highlight your star students — toppers, athletes, artists, and innovators.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">⭐</span> Featured Students</h3>
+                    <div class="tip-box"><span>💡</span><span>Add 4–6 students. The first one becomes the large "Star of
+                            the Year" card. Always get parent consent before featuring a student's photo.</span></div>
+                    <div class="dynamic-list" id="spotlight-list"></div>
+                    <button class="add-item-btn" onclick="addSpotlight()">+ Add Student</button>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 13: ACHIEVEMENTS ════ -->
+            <div class="form-page" id="page-13">
+                <div class="form-page-header">
+                    <span class="page-icon">🏅</span>
+                    <h2>Achievements & Alumni</h2>
+                    <p>School-level achievements and notable alumni that appear in the Why Choose Us and Alumni
+                        sections.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🏆</span> School Achievements</h3>
+                    <div class="dynamic-list" id="achievement-list"></div>
+                    <button class="add-item-btn" onclick="addAchievement()">+ Add Achievement</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🎓</span> Notable Alumni</h3>
+                    <div class="dynamic-list" id="alumni-list"></div>
+                    <button class="add-item-btn" onclick="addAlumni()">+ Add Alumni</button>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">💬</span> Parent / Student Testimonials</h3>
+                    <div class="dynamic-list" id="testimonial-list"></div>
+                    <button class="add-item-btn" onclick="addTestimonial()">+ Add Testimonial</button>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 14: COLORS ════ -->
+            <div class="form-page" id="page-14">
+                <div class="form-page-header">
+                    <span class="page-icon">🎨</span>
+                    <h2>Colors & Branding</h2>
+                    <p>Set your school's official colors. These apply across the entire website.</p>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🖌️</span> School Color Palette</h3>
+                    <div class="tip-box"><span>💡</span><span>Use your school's official colors from your uniform, logo,
+                            or prospectus. Don't use very light colors for primary — it makes text hard to read.</span>
+                    </div>
+                    <div class="color-row">
+                        <div class="color-pick"><input type="color" id="col-primary"
+                                value="#2d6a4f"><span>Primary</span></div>
+                        <div class="color-pick"><input type="color" id="col-primary-dark" value="#1b4332"><span>Primary
+                                Dark</span></div>
+                        <div class="color-pick"><input type="color" id="col-accent" value="#e07a5f"><span>Accent</span>
+                        </div>
+                        <div class="color-pick"><input type="color" id="col-highlight"
+                                value="#f4a261"><span>Highlight</span></div>
+                        <div class="color-pick"><input type="color" id="col-bg" value="#fef6e4"><span>Background</span>
+                        </div>
+                        <div class="color-pick"><input type="color" id="col-text" value="#2d3a2e"><span>Text</span>
+                        </div>
+                        <div class="color-pick"><input type="color" id="col-alert" value="#c1440e"><span>Alert /
+                                Red</span></div>
+                    </div>
+                    <div id="color-preview"
+                        style="margin-top:1.5rem;background:var(--white);border-radius:var(--r-sm);padding:1.25rem;border:1px solid var(--border-l)">
+                        <p style="font-size:.78rem;color:var(--text-m);margin-bottom:.75rem;font-weight:600">LIVE
+                            PREVIEW</p>
+                        <div id="cp-nav"
+                            style="padding:.6rem 1.2rem;border-radius:8px;display:inline-flex;gap:1rem;align-items:center;margin-bottom:.75rem">
+                            <span id="cp-name" style="font-weight:700;font-size:.9rem">Your School Name</span>
+                            <span id="cp-btn"
+                                style="padding:.3rem .8rem;border-radius:6px;font-size:.75rem;font-weight:700">Apply
+                                Now</span>
+                        </div><br>
+                        <span id="cp-tag"
+                            style="padding:.25rem .7rem;border-radius:20px;font-size:.72rem;font-weight:700">📰 Latest
+                            News</span>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">🔤</span> Typography Preference</h3>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group"><label>Heading Font Style</label>
+                            <select id="font-heading">
+                                <option value="Playfair Display">Playfair Display (Elegant Serif)</option>
+                                <option value="Fraunces">Fraunces (Bold Vintage)</option>
+                                <option value="Merriweather">Merriweather (Academic)</option>
+                                <option value="Raleway">Raleway (Modern)</option>
+                                <option value="Poppins">Poppins (Clean Modern)</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Body Text Font</label>
+                            <select id="font-body">
+                                <option value="DM Sans">DM Sans (Recommended)</option>
+                                <option value="Nunito">Nunito (Friendly)</option>
+                                <option value="Lato">Lato (Professional)</option>
+                                <option value="Open Sans">Open Sans (Classic)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-section">
+                    <h3><span class="sh-icon">📣</span> Ticker & Announcement</h3>
+                    <div class="form-group"><label>Scrolling Ticker Message <span class="hint">(top of homepage —
+                                separate multiple with •)</span></label>
+                        <textarea id="ticker-text" rows="3"
+                            placeholder="📢 Board Results 2024 — 98.4% Pass Rate  •  🏆 Science Olympiad Winners 2024  •  📅 Admissions Open 2025-26  •"></textarea>
+                    </div>
+                    <div class="form-group"><label>Important Notice Banner <span class="hint">(red bar below quick
+                                links)</span></label>
+                        <input type="text" id="ann-banner"
+                            placeholder="e.g. Admission 2025-26: Last date March 31, 2025. Download form below.">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════ PAGE 15: PREVIEW & EXPORT ════ -->
+            <div class="form-page" id="page-15">
+                <div class="form-page-header">
+                    <span class="page-icon">✅</span>
+                    <h2>Preview & Export</h2>
+                    <p>Review your data and export it to update the school website.</p>
+                </div>
+
+                <div class="preview-card" id="preview-identity">
+                    <h3>🏫 School Identity</h3>
+                    <div id="prev-identity-rows"></div>
+                </div>
+                <div class="preview-card" id="preview-contact">
+                    <h3>📍 Contact & Location</h3>
+                    <div id="prev-contact-rows"></div>
+                </div>
+                <div class="preview-card" id="preview-stats">
+                    <h3>📊 Statistics & Content Counts</h3>
+                    <div id="prev-stats-rows"></div>
+                </div>
+
+                <div class="export-actions">
+                    <div class="export-card" onclick="exportJSON()">
+                        <span class="ec-icon">📄</span>
+                        <h4>Export as JSON</h4>
+                        <p>Save all data as a JSON file for the developer to import</p>
+                    </div>
+                    <div class="export-card" onclick="exportCSV()">
+                        <span class="ec-icon">📊</span>
+                        <h4>Export as CSV</h4>
+                        <p>Open in Excel / Google Sheets to review and edit</p>
+                    </div>
+                    <div class="export-card" onclick="printForm()">
+                        <span class="ec-icon">🖨️</span>
+                        <h4>Print / Save PDF</h4>
+                        <p>Print a hard copy of all filled data for records</p>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top:2rem;background:rgba(45,106,79,.07);border:1px solid rgba(45,106,79,.2);border-radius:var(--r);padding:1.5rem">
+                    <h3 style="font-family:var(--font-d);font-size:1.05rem;margin-bottom:.75rem;color:var(--forest-d)">
+                        📋 Completion Checklist</h3>
+                    <div id="checklist"></div>
+                </div>
+            </div>
+
+            <!-- ════ BOTTOM NAV ════ -->
+            <div class="form-nav-bar">
+                <div class="nav-info">Step <strong id="cur-step">1</strong> of <strong>16</strong></div>
+                <div style="display:flex;gap:.75rem">
+                    <button class="btn btn-ghost" id="btn-prev" onclick="goTo(currentPage-1)">← Previous</button>
+                    <button class="btn btn-primary" id="btn-next" onclick="goTo(currentPage+1)">Next →</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ════════════════════════════
+        //  NAVIGATION
+        // ════════════════════════════
+        let currentPage = 0;
+        const TOTAL = 16;
+        const pageTitles = [
+            ['School Identity', 'Basic information that appears across your entire website'],
+            ['Contact & Location', 'Address, phone numbers, emails, and office hours'],
+            ['Principal & Leadership', 'Principal details, message, and management info'],
+            ['History, Vision & Mission', 'Your school\'s founding story and core values'],
+            ['Key Statistics', 'Numbers that appear in the hero stats strip'],
+            ['Infrastructure & Facilities', 'Facilities featured on the About Us page'],
+            ['Curriculum & Academics', 'Subjects, streams, departments, and teaching approach'],
+            ['Faculty Members', 'Key teachers featured on the Academics page'],
+            ['Admissions', 'Process, eligibility, steps, and required documents'],
+            ['Fee Structure', 'Fee table and downloadable forms'],
+            ['Notices, Events & Holidays', 'Live content for the Notices page'],
+            ['Gallery Albums', 'Album categories for the photo gallery'],
+            ['Student Spotlight', 'Star students featured on the homepage'],
+            ['Achievements & Alumni', 'Awards, notable alumni, and testimonials'],
+            ['Colors & Branding', 'School colors, fonts, and announcement text'],
+            ['Preview & Export', 'Review all data and export'],
+        ];
+
+        function goTo(n) {
+            if (n < 0 || n >= TOTAL) return;
+            document.getElementById('page-' + currentPage).classList.remove('active');
+            document.querySelectorAll('.nav-item')[currentPage].classList.remove('active');
+            currentPage = n;
+            document.getElementById('page-' + currentPage).classList.add('active');
+            document.querySelectorAll('.nav-item')[currentPage].classList.add('active');
+            document.getElementById('page-title').textContent = pageTitles[n][0];
+            document.getElementById('page-desc').textContent = pageTitles[n][1];
+            document.getElementById('cur-step').textContent = n + 1;
+            document.getElementById('btn-prev').disabled = n === 0;
+            document.getElementById('btn-next').textContent = n === TOTAL - 1 ? '✓ Done' : 'Next →';
+            if (n === TOTAL - 1) buildPreview();
+            updateProgress();
+            document.querySelector('.main').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ════════════════════════════
+        //  PROGRESS
+        // ════════════════════════════
+        function updateProgress() {
+            const filled = document.querySelectorAll('.nav-item.done').length;
+            const pct = Math.round((filled / TOTAL) * 100);
+            document.getElementById('progress-bar').style.width = pct + '%';
+            document.getElementById('progress-text').textContent = filled + ' of ' + TOTAL + ' sections filled';
+        }
+
+        function markDone(pageIdx) {
+            document.querySelectorAll('.nav-item')[pageIdx].classList.add('done');
+            updateProgress();
+        }
+
+        // ════════════════════════════
+        //  FORM HELPERS
+        // ════════════════════════════
+        function updateCount(el, spanId) {
+            document.getElementById(spanId).textContent = el.value.length;
+        }
+
+        function previewImg(input, previewId) {
+            const prev = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => { prev.src = e.target.result; prev.style.display = 'block'; };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ════════════════════════════
+        //  TAGS INPUT
+        // ════════════════════════════
+        function addTag(e, wrapId) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                const input = e.target;
+                const val = input.value.trim().replace(/,$/, '');
+                if (!val) return;
+                const wrap = document.getElementById(wrapId);
+                const chip = document.createElement('div');
+                chip.className = 'tag-chip';
+                chip.innerHTML = `${val}<button onclick="this.parentElement.remove()" title="Remove">×</button>`;
+                wrap.insertBefore(chip, input);
+                input.value = '';
+            }
+        }
+
+        // ════════════════════════════
+        //  DYNAMIC ITEM BUILDERS
+        // ════════════════════════════
+        function makeItem(listId, fields, title) {
+            const list = document.getElementById(listId);
+            const idx = list.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            let inner = `<div class="dynamic-item-header"><div class="dynamic-item-title">${title} ${idx}</div><button class="item-remove" onclick="this.closest('.dynamic-item').remove();renumberItems('${listId}','${title}')" title="Remove">✕</button></div>`;
+            fields.forEach(f => {
+                if (f.type === 'select') {
+                    inner += `<div class="form-group"><label>${f.label}</label><select>${f.opts.map(o => `<option>${o}</option>`).join('')}</select></div>`;
+                } else if (f.type === 'textarea') {
+                    inner += `<div class="form-group"><label>${f.label}</label><textarea rows="2" placeholder="${f.ph || ''}"></textarea></div>`;
+                } else if (f.type === 'grid2') {
+                    inner += `<div class="form-grid form-grid-2">${f.children.map(c => `<div class="form-group"><label>${c.label}</label><input type="${c.itype || 'text'}" placeholder="${c.ph || ''}"></div>`).join('')}</div>`;
+                } else {
+                    inner += `<div class="form-group"><label>${f.label}</label><input type="${f.itype || 'text'}" placeholder="${f.ph || ''}"></div>`;
+                }
+            });
+            div.innerHTML = inner;
+            list.appendChild(div);
+            updateBadge(listId);
+        }
+
+        function renumberItems(listId, title) {
+            document.querySelectorAll(`#${listId} .dynamic-item-title`).forEach((t, i) => t.textContent = `${title} ${i + 1}`);
+            updateBadge(listId);
+        }
+
+        function updateBadge(listId) {
+            const count = document.getElementById(listId).children.length;
+            if (listId === 'faculty-list') {
+                document.getElementById('fac-count').textContent = count;
+                document.getElementById('fac-label').textContent = count + ' added';
+            }
+            if (listId === 'notices-list') document.getElementById('not-count').textContent = count;
+        }
+
+        function addInfra() {
+            makeItem('infra-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Facility Name *', ph: 'e.g. Modern Science Lab' },
+                        { label: 'Icon Emoji', ph: 'e.g. 🔬' }
+                    ]
+                },
+                { label: 'Description', type: 'textarea', ph: 'Briefly describe this facility...' },
+            ], 'Facility');
+        }
+
+        function addDept() {
+            makeItem('dept-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Department Name *', ph: 'e.g. Science & Technology' },
+                        { label: 'Icon Emoji', ph: 'e.g. 🔬' }
+                    ]
+                },
+                { label: 'Head of Department (HoD)', ph: 'e.g. Mrs. Anita Sharma' },
+            ], 'Department');
+        }
+
+        function addFaculty() {
+            makeItem('faculty-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Full Name *', ph: 'e.g. Mrs. Anita Sharma' },
+                        { label: 'Designation', ph: 'e.g. Mathematics Teacher, HoD' }
+                    ]
+                },
+                {
+                    type: 'grid2', children: [
+                        { label: 'Subject / Department *', ph: 'e.g. Mathematics' },
+                        { label: 'Qualification', ph: 'e.g. M.Sc., B.Ed.' }
+                    ]
+                },
+                {
+                    type: 'grid2', children: [
+                        { label: 'Experience', ph: 'e.g. 18 years' },
+                        { label: 'Email', ph: 'teacher@school.edu.in' }
+                    ]
+                },
+            ], 'Faculty');
+            updateBadge('faculty-list');
+        }
+
+        function addEligibility() {
+            makeItem('eligibility-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Class Group *', ph: 'e.g. Class VI – IX' },
+                        { label: 'Age Criteria', ph: 'e.g. 10–14 years as of June 1' }
+                    ]
+                },
+                { label: 'Eligibility Description', type: 'textarea', ph: 'Describe eligibility, test required, documents needed...' },
+            ], 'Eligibility');
+        }
+
+        function addAdmStep() {
+            makeItem('adm-steps-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Step Title *', ph: 'e.g. Download Form' },
+                        { label: 'Icon Emoji', ph: 'e.g. 📋' }
+                    ]
+                },
+                { label: 'Step Description', type: 'textarea', ph: 'Explain what to do in this step...' },
+            ], 'Step');
+        }
+
+        function addFeeRow() {
+            const container = document.getElementById('fee-rows');
+            const row = document.createElement('div');
+            row.className = 'fee-row dynamic-item';
+            row.style.cssText = 'padding:.4rem;border:1px solid var(--border-l);background:var(--white)';
+            row.innerHTML = `
+    <input type="text" placeholder="e.g. Class I – V" style="border:1px solid var(--border);border-radius:6px;padding:.45rem .6rem;font-size:.8rem;font-family:var(--font-b);width:100%">
+    <input type="number" placeholder="45000" style="border:1px solid var(--border);border-radius:6px;padding:.45rem .6rem;font-size:.8rem;font-family:var(--font-b);width:100%">
+    <input type="number" placeholder="8000" style="border:1px solid var(--border);border-radius:6px;padding:.45rem .6rem;font-size:.8rem;font-family:var(--font-b);width:100%">
+    <input type="number" placeholder="12000" style="border:1px solid var(--border);border-radius:6px;padding:.45rem .6rem;font-size:.8rem;font-family:var(--font-b);width:100%">
+    <input type="number" placeholder="65000" style="border:1px solid var(--border);border-radius:6px;padding:.45rem .6rem;font-size:.8rem;font-family:var(--font-b);width:100%">
+    <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:#c1440e;font-size:1rem;padding:.2rem">✕</button>`;
+            container.appendChild(row);
+        }
+
+        function addForm() {
+            makeItem('forms-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Form Name *', ph: 'e.g. Admission Form 2025-26' },
+                        { label: 'File Type', ph: 'e.g. PDF' }
+                    ]
+                },
+                { label: 'Description', ph: 'e.g. Fill and submit at the school office' },
+            ], 'Form');
+        }
+
+        function addNotice() {
+            const list = document.getElementById('notices-list');
+            const idx = list.children.length + 1;
+            const div = document.createElement('div');
+            div.className = 'dynamic-item';
+            div.innerHTML = `
+    <div class="dynamic-item-header"><div class="dynamic-item-title">Notice ${idx}</div><button class="item-remove" onclick="this.closest('.dynamic-item').remove();updateBadge('notices-list')" title="Remove">✕</button></div>
+    <div class="form-grid form-grid-2">
+      <div class="form-group"><label>Notice Title *</label><input type="text" placeholder="e.g. Last Date for Admission Form"></div>
+      <div class="form-group"><label>Date</label><input type="date"></div>
+    </div>
+    <div class="form-group"><label>Notice Details</label><textarea rows="2" placeholder="Full description of the notice..."></textarea></div>
+    <div class="form-group"><label>Type / Priority</label>
+      <div class="priority-pills">
+        <div class="priority-pill" data-val="event" onclick="selectPill(this)">📅 Event</div>
+        <div class="priority-pill" data-val="exam" onclick="selectPill(this)">📝 Exam</div>
+        <div class="priority-pill" data-val="holiday" onclick="selectPill(this)">🗓 Holiday</div>
+        <div class="priority-pill sel" data-val="urgent" onclick="selectPill(this)">⚡ Urgent</div>
+      </div>
+    </div>`;
+            list.appendChild(div);
+            updateBadge('notices-list');
+        }
+
+        function selectPill(el) {
+            el.closest('.priority-pills').querySelectorAll('.priority-pill').forEach(p => p.classList.remove('sel'));
+            el.classList.add('sel');
+        }
+
+        function addEvent() {
+            makeItem('events-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Event Name *', ph: 'e.g. Annual Day Celebration' },
+                        { label: 'Date *', itype: 'date' }
+                    ]
+                },
+                {
+                    type: 'grid2', children: [
+                        { label: 'Time', ph: 'e.g. 5:00 PM' },
+                        { label: 'Venue', ph: 'e.g. School Auditorium' }
+                    ]
+                },
+                { label: 'Description', type: 'textarea', ph: 'Brief event description...' },
+            ], 'Event');
+        }
+
+        function addHoliday() {
+            makeItem('holidays-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Holiday Name *', ph: 'e.g. Republic Day' },
+                        { label: 'Date *', itype: 'date' }
+                    ]
+                },
+                { label: 'Note', ph: 'e.g. Mandatory attendance for staff' },
+            ], 'Holiday');
+        }
+
+        function addGallery() {
+            makeItem('gallery-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Album Name *', ph: 'e.g. Annual Day 2024' },
+                        { label: 'Icon Emoji', ph: 'e.g. 🎭' }
+                    ]
+                },
+                { type: 'select', label: 'Category *', opts: ['Events', 'Campus', 'Sports', 'Academics', 'Cultural', 'Field Trips', 'Graduation', 'Other'] },
+                { label: 'Description', ph: 'e.g. Photos from the Annual Day celebration, December 2024' },
+            ], 'Album');
+        }
+
+        function addSpotlight() {
+            makeItem('spotlight-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Student Name *', ph: 'e.g. Riya Sharma' },
+                        { label: 'Class / Grade', ph: 'e.g. Class XII' }
+                    ]
+                },
+                {
+                    type: 'grid2', children: [
+                        { label: 'Achievement / Title *', ph: 'e.g. School Topper, CBSE 498/500' },
+                        { label: 'Category / Field', ph: 'e.g. Academics, Sports, Arts' }
+                    ]
+                },
+                { label: 'Achievement Description', type: 'textarea', ph: 'Describe the achievement, awards won, and future plans...' },
+                { label: 'Icon Emoji', ph: 'e.g. 🏆 or 🎨 or ⚽' },
+            ], 'Student');
+        }
+
+        function addAchievement() {
+            makeItem('achievement-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Achievement / Award Name *', ph: 'e.g. National Science Olympiad Gold' },
+                        { label: 'Year', ph: 'e.g. 2024' }
+                    ]
+                },
+                { label: 'Description', type: 'textarea', ph: 'Who won it, at what level, significance...' },
+                { label: 'Icon Emoji', ph: 'e.g. 🏆 or 🥇' },
+            ], 'Achievement');
+        }
+
+        function addAlumni() {
+            makeItem('alumni-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Name *', ph: 'e.g. Dr. Anil Rao' },
+                        { label: 'Graduation Year / Batch', ph: 'e.g. Batch 2005' }
+                    ]
+                },
+                {
+                    type: 'grid2', children: [
+                        { label: 'Current Role / Profession *', ph: 'e.g. AIIMS Delhi · Cardiologist' },
+                        { label: 'Field / Domain', ph: 'e.g. Medicine, Technology, Arts' }
+                    ]
+                },
+                { label: 'Icon Emoji', ph: 'e.g. 👨‍⚕️ or 👩‍💻' },
+            ], 'Alumni');
+        }
+
+        function addTestimonial() {
+            makeItem('testimonial-list', [
+                {
+                    type: 'grid2', children: [
+                        { label: 'Name *', ph: 'e.g. Mrs. Kavitha Reddy' },
+                        { label: 'Relation to School', ph: 'e.g. Parent of Class IX Student' }
+                    ]
+                },
+                { label: 'Testimonial / Quote *', type: 'textarea', ph: '"Write the testimonial exactly as the person said it..."' },
+                { label: 'Rating (out of 5)', itype: 'number', ph: 'e.g. 5' },
+            ], 'Testimonial');
+        }
+
+        // ════════════════════════════
+        //  COLOR PREVIEW
+        // ════════════════════════════
+        document.querySelectorAll('input[type="color"]').forEach(input => {
+            input.addEventListener('input', updateColorPreview);
+        });
+
+        function updateColorPreview() {
+            const primary = document.getElementById('col-primary').value;
+            const accent = document.getElementById('col-accent').value;
+            const bg = document.getElementById('col-bg').value;
+            const text = document.getElementById('col-text').value;
+            const nav = document.getElementById('cp-nav');
+            const btn = document.getElementById('cp-btn');
+            const tag = document.getElementById('cp-tag');
+            nav.style.background = primary;
+            nav.style.color = '#fff';
+            btn.style.background = accent;
+            btn.style.color = '#fff';
+            tag.style.background = `${primary}18`;
+            tag.style.color = primary;
+            tag.style.border = `1.5px solid ${primary}40`;
+            document.getElementById('color-preview').style.background = bg;
+            document.getElementById('cp-name').style.color = '#fff';
+        }
+
+        // ════════════════════════════
+        //  PREVIEW & EXPORT
+        // ════════════════════════════
+        function val(id) { const el = document.getElementById(id); return el ? el.value || '' : ''; }
+
+        function buildPreview() {
+            buildRows('prev-identity-rows', [
+                ['School Name', val('school-name')],
+                ['Short Name', val('school-short')],
+                ['Tagline', val('school-tagline')],
+                ['Board', val('school-board')],
+                ['Affiliation No.', val('school-affno')],
+                ['Established', val('school-estd')],
+                ['Type', val('school-type')],
+                ['Medium', val('school-medium')],
+                ['Classes', `${val('class-from')} to ${val('class-to')}`],
+            ]);
+            buildRows('prev-contact-rows', [
+                ['Address', `${val('addr-street')}, ${val('addr-area')}, ${val('addr-city')}, ${val('addr-state')} - ${val('addr-pin')}`],
+                ['Main Phone', val('ph-main')],
+                ['Admissions Phone', val('ph-adm')],
+                ['General Email', val('em-general')],
+                ['Office Hours', `Mon–Fri: ${val('hr-weekday')}, Sat: ${val('hr-sat')}`],
+            ]);
+            const facCount = document.getElementById('faculty-list').children.length;
+            const notCount = document.getElementById('notices-list').children.length;
+            const evCount = document.getElementById('events-list').children.length;
+            const feeCount = document.getElementById('fee-rows').children.length;
+            const spotCount = document.getElementById('spotlight-list').children.length;
+            const alumniCount = document.getElementById('alumni-list').children.length;
+            const testiCount = document.getElementById('testimonial-list').children.length;
+            const achCount = document.getElementById('achievement-list').children.length;
+            const galCount = document.getElementById('gallery-list').children.length;
+            buildRows('prev-stats-rows', [
+                ['Total Students', val('stat-students')],
+                ['Total Faculty', val('stat-faculty')],
+                ['Board Pass Rate', val('stat-pass') ? val('stat-pass') + '%' : ''],
+                ['Campus Area', val('stat-campus') ? val('stat-campus') + ' acres' : ''],
+                ['Principal', val('prin-name')],
+                ['Faculty entries added', facCount],
+                ['Notices posted', notCount],
+                ['Events added', evCount],
+                ['Upcoming holidays', document.getElementById('holidays-list').children.length],
+                ['Fee rows added', feeCount],
+                ['Student spotlights', spotCount],
+                ['Alumni added', alumniCount],
+                ['Testimonials', testiCount],
+                ['Achievements', achCount],
+                ['Gallery albums', galCount],
+            ]);
+
+            // Checklist
+            const checks = [
+                ['School name & tagline', !!val('school-name')],
+                ['Board & affiliation', !!val('school-board')],
+                ['Address filled', !!val('addr-street')],
+                ['Phone number', !!val('ph-main')],
+                ['Email address', !!val('em-general')],
+                ['Principal details', !!val('prin-name')],
+                ['Principal message', !!val('prin-msg')],
+                ['History filled', !!val('hist-p1')],
+                ['Vision & Mission', !!(val('school-vision') && val('school-mission'))],
+                ['Student stats', !!val('stat-students')],
+                ['Faculty added', facCount > 0],
+                ['Admission info', !!val('adm-year')],
+                ['Fee structure', feeCount > 0],
+                ['At least 1 notice', notCount > 0],
+                ['Gallery albums', galCount > 0],
+                ['School colors set', true],
+            ];
+            const cl = document.getElementById('checklist');
+            cl.innerHTML = checks.map(([label, done]) =>
+                `<div style="display:flex;align-items:center;gap:.6rem;padding:.38rem 0;border-bottom:1px solid var(--border-l);font-size:.84rem">
+      <span style="font-size:1rem">${done ? '✅' : '⬜'}</span>
+      <span style="color:${done ? 'var(--forest)' : 'var(--text-m)'};font-weight:${done ? '600' : '400'}">${label}</span>
+    </div>`
+            ).join('');
+        }
+
+        function buildRows(containerId, rows) {
+            document.getElementById(containerId).innerHTML = rows.map(([label, value]) =>
+                `<div class="preview-row">
+      <div class="pr-label">${label}</div>
+      <div class="pr-value ${!value || value === ' to ' ? 'empty' : ''}">${value || '—'}</div>
+    </div>`
+            ).join('');
+        }
+
+        // ════════════════════════════
+        //  EXPORT FUNCTIONS
+        // ════════════════════════════
+        function collectData() {
+            return {
+                school: {
+                    name: val('school-name'), short: val('school-short'), tagline: val('school-tagline'),
+                    estd: val('school-estd'), board: val('school-board'), affNo: val('school-affno'),
+                    type: val('school-type'), medium: val('school-medium'),
+                    classFrom: val('class-from'), classTo: val('class-to'),
+                    emoji: val('school-emoji'),
+                    social: { website: val('web-url'), facebook: val('social-fb'), instagram: val('social-ig'), youtube: val('social-yt'), twitter: val('social-tw'), whatsapp: val('social-wa') }
+                },
+                contact: {
+                    address: { street: val('addr-street'), area: val('addr-area'), city: val('addr-city'), state: val('addr-state'), pin: val('addr-pin'), district: val('addr-dist'), mapLink: val('addr-maplink') },
+                    phones: { main: val('ph-main'), admissions: val('ph-adm'), principal: val('ph-prin'), transport: val('ph-bus'), fee: val('ph-fee'), emergency: val('ph-sos') },
+                    emails: { general: val('em-general'), admissions: val('em-adm'), principal: val('em-email'), accounts: val('em-fee') },
+                    hours: { weekday: val('hr-weekday'), saturday: val('hr-sat'), sunday: val('hr-sun'), holidays: val('hr-hol') }
+                },
+                principal: { name: val('prin-name'), qual: val('prin-qual'), exp: val('prin-exp'), designation: val('prin-desig'), email: val('prin-email'), phone: val('prin-ph'), message: val('prin-msg') },
+                management: { trust: val('trust-name'), chairman: val('trust-chair'), founder: val('trust-founder'), regNo: val('trust-reg') },
+                about: { history1: val('hist-p1'), history2: val('hist-p2'), history3: val('hist-p3'), vision: val('school-vision'), mission: val('school-mission') },
+                stats: { students: val('stat-students'), faculty: val('stat-faculty'), years: val('stat-years'), alumni: val('stat-alumni'), campus: val('stat-campus'), rooms: val('stat-rooms'), awards: val('stat-awards'), passRate: val('stat-pass'), top10: val('stat-top10'), top12: val('stat-top12'), rating: val('stat-rating'), clubs: val('stat-clubs') },
+                admissions: { year: val('adm-year'), lastDate: val('adm-last'), startDate: val('adm-start'), classes: val('adm-classes'), sessionStart: val('adm-session'), testDate: val('adm-test') },
+                curriculum: { description: val('curriculum-desc') },
+                transport: { available: val('transport-yn'), buses: val('transport-buses'), areas: val('transport-areas'), gps: val('transport-gps') },
+                branding: { primaryColor: val('col-primary'), primaryDark: val('col-primary-dark'), accent: val('col-accent'), highlight: val('col-highlight'), bg: val('col-bg'), text: val('col-text'), alert: val('col-alert'), headingFont: val('font-heading'), bodyFont: val('font-body'), ticker: val('ticker-text'), banner: val('ann-banner') },
+                feeBank: val('fee-bank'),
+                facultyCount: document.getElementById('faculty-list').children.length,
+                noticesCount: document.getElementById('notices-list').children.length,
+                eventsCount: document.getElementById('events-list').children.length,
+                exportedAt: new Date().toISOString()
+            };
+        }
+
+        function exportJSON() {
+            const data = collectData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'school_data_' + (data.school.name || 'website').replace(/\s+/g, '_') + '.json';
+            a.click(); URL.revokeObjectURL(url);
+            showToast('✅ JSON exported successfully!');
+        }
+
+        function exportCSV() {
+            const data = collectData();
+            const rows = [['Field', 'Value'],
+            ['School Name', data.school.name], ['Tagline', data.school.tagline], ['Board', data.school.board],
+            ['Established', data.school.estd], ['Type', data.school.type], ['Medium', data.school.medium],
+            ['Address', `${data.contact.address.street}, ${data.contact.address.area}, ${data.contact.address.city}`],
+            ['Phone', data.contact.phones.main], ['Email', data.contact.emails.general],
+            ['Principal', data.principal.name], ['Principal Message', data.principal.message],
+            ['Vision', data.about.vision], ['Mission', data.about.mission],
+            ['Students', data.stats.students], ['Faculty', data.stats.faculty], ['Pass Rate', data.stats.passRate],
+            ['Primary Color', data.branding.primaryColor], ['Accent Color', data.branding.accent],
+            ];
+            const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'school_data.csv'; a.click(); URL.revokeObjectURL(url);
+            showToast('✅ CSV exported successfully!');
+        }
+
+        function printForm() { window.print(); }
+
+        // ════════════════════════════
+        //  DRAFT SAVE / LOAD
+        // ════════════════════════════
+        function saveDraft() {
+            const data = collectData();
+            localStorage.setItem('schoolFormDraft', JSON.stringify(data));
+            markDone(currentPage);
+            showToast('💾 Draft saved locally!');
+        }
+
+        function loadDraft() {
+            try {
+                const saved = localStorage.getItem('schoolFormDraft');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    const fill = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+                    if (data.school) {
+                        fill('school-name', data.school.name); fill('school-short', data.school.short);
+                        fill('school-tagline', data.school.tagline); fill('school-estd', data.school.estd);
+                        fill('school-board', data.school.board); fill('school-affno', data.school.affNo);
+                        fill('school-type', data.school.type); fill('school-medium', data.school.medium);
+                        fill('school-emoji', data.school.emoji);
+                    }
+                    if (data.contact) {
+                        fill('addr-street', data.contact.address?.street); fill('addr-city', data.contact.address?.city);
+                        fill('addr-state', data.contact.address?.state); fill('addr-pin', data.contact.address?.pin);
+                        fill('ph-main', data.contact.phones?.main); fill('em-general', data.contact.emails?.general);
+                        fill('hr-weekday', data.contact.hours?.weekday);
+                    }
+                    if (data.principal) { fill('prin-name', data.principal.name); fill('prin-msg', data.principal.message); }
+                    if (data.about) { fill('hist-p1', data.about.history1); fill('school-vision', data.about.vision); fill('school-mission', data.about.mission); }
+                    if (data.stats) { fill('stat-students', data.stats.students); fill('stat-faculty', data.stats.faculty); fill('stat-pass', data.stats.passRate); }
+                    if (data.branding) { fill('col-primary', data.branding.primaryColor); fill('col-accent', data.branding.accent); fill('ticker-text', data.branding.ticker); fill('ann-banner', data.branding.banner); updateColorPreview(); }
+                    showToast('📂 Draft restored!');
+                }
+            } catch (e) { }
+        }
+
+        // ════════════════════════════
+        //  TOAST
+        // ════════════════════════════
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // ════════════════════════════
+        //  APPLY TO WEBSITE (Live Sync)
+        // ════════════════════════════
+        function applyToWebsite() {
+            const data = collectData();
+            // Also collect fee table rows for Real.html
+            const feeRows = [];
+            document.querySelectorAll('#fee-rows .fee-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                if (inputs.length >= 5) {
+                    feeRows.push({
+                        class: inputs[0].value,
+                        tuition: inputs[1].value,
+                        dev: inputs[2].value,
+                        transport: inputs[3].value,
+                        total: inputs[4].value
+                    });
+                }
+            });
+            data.feeRows = feeRows;
+
+            // Collect notices
+            const notices = [];
+            document.querySelectorAll('#notices-list .dynamic-item').forEach(item => {
+                const inputs = item.querySelectorAll('input, textarea');
+                const pill = item.querySelector('.priority-pill.sel');
+                notices.push({
+                    title: inputs[0]?.value || '',
+                    date: inputs[1]?.value || '',
+                    details: inputs[2]?.value || '',
+                    type: pill?.dataset.val || 'event'
+                });
+            });
+            data.notices = notices;
+
+            // Collect events
+            const events = [];
+            document.querySelectorAll('#events-list .dynamic-item').forEach(item => {
+                const inputs = item.querySelectorAll('input, textarea');
+                events.push({
+                    name: inputs[0]?.value || '',
+                    date: inputs[1]?.value || '',
+                    time: inputs[2]?.value || '',
+                    venue: inputs[3]?.value || '',
+                    desc: inputs[4]?.value || ''
+                });
+            });
+            data.events = events;
+
+            // Collect faculty
+            const faculty = [];
+            document.querySelectorAll('#faculty-list .dynamic-item').forEach(item => {
+                const inputs = item.querySelectorAll('input');
+                faculty.push({
+                    name: inputs[0]?.value || '',
+                    designation: inputs[1]?.value || '',
+                    subject: inputs[2]?.value || '',
+                    qual: inputs[3]?.value || '',
+                    exp: inputs[4]?.value || '',
+                    email: inputs[5]?.value || ''
+                });
+            });
+            data.faculty = faculty;
+
+            localStorage.setItem('schoolLiveData', JSON.stringify(data));
+            // Dispatch storage event for same-tab listeners too (Real.html in another tab gets it automatically)
+            try { window.dispatchEvent(new StorageEvent('storage', { key: 'schoolLiveData', newValue: JSON.stringify(data) })); } catch(e) {}
+            showToast('⚡ Applied to website! Open Real.html to see changes.');
+        }
+
+        // Auto-live-save on every input/change in the form
+        function setupLiveSync() {
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                el.addEventListener('input', () => applyToWebsite());
+                el.addEventListener('change', () => applyToWebsite());
+            });
+        }
+
+        // ════════════════════════════
+        //  INIT
+        // ════════════════════════════
+        window.addEventListener('DOMContentLoaded', () => {
+            goTo(0);
+            // Pre-add one row for each critical dynamic list
+            addInfra(); addInfra(); addInfra();
+            addDept(); addDept();
+            addFaculty(); addFaculty(); addFaculty();
+            addEligibility(); addEligibility();
+            addAdmStep(); addAdmStep(); addAdmStep(); addAdmStep(); addAdmStep();
+            addFeeRow(); addFeeRow(); addFeeRow(); addFeeRow(); addFeeRow();
+            addForm(); addForm(); addForm();
+            addNotice(); addNotice();
+            addEvent(); addEvent();
+            addHoliday(); addHoliday(); addHoliday();
+            addGallery(); addGallery(); addGallery();
+            addSpotlight(); addSpotlight(); addSpotlight();
+            addAchievement(); addAchievement();
+            addAlumni(); addAlumni(); addAlumni();
+            addTestimonial(); addTestimonial();
+            updateColorPreview();
+            loadDraft();
+            // Set up live sync after all elements exist
+            setTimeout(setupLiveSync, 300);
+        });
+    </script>
+
+    <style>
+        @media print {
+
+            .sidebar,
+            .main-header,
+            .form-nav-bar,
+            .header-actions {
+                display: none !important;
+            }
+
+            .app {
+                display: block !important;
+            }
+
+            .form-page {
+                display: block !important;
+                page-break-after: always;
+            }
+
+            .form-section {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+            }
+        }
+    </style>
+</body>
+
+</html>
